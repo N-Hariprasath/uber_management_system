@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uber Customer Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+
+<div class="background-animation">
+    <div class="car">🚘</div>
+</div>
+
+<div class="container">
+
+    <h1 class="glitch" data-text="Uber Customer Dashboard">Uber Customer Dashboard</h1>
+
+    <!-- Form -->
+    <form action="/insert" method="POST" class="form glass-form">
+        <div class="input-group">
+            <i class="fas fa-user icon"></i>
+            <input type="text" id="name" name="name" placeholder="Name" required>
+        </div>
+        
+        <div class="input-group">
+            <i class="fas fa-phone-alt icon"></i>
+            <input type="text" id="mobile" name="mobile" placeholder="Mobile" required>
+        </div>
+        
+        <div class="input-group">
+            <i class="fas fa-rupee-sign icon"></i>
+            <input type="number" id="amount" name="amount" placeholder="Amount" step="0.01" required>
+        </div>
+        
+        <div class="input-group">
+            <i class="fas fa-map-marker-alt icon"></i>
+            <input type="text" id="location" name="location" placeholder="Location" required>
+        </div>
+
+        <button type="submit" id="submitBtn"><i class="fas fa-plus-circle"></i> Add Customer</button>
+    </form>
+
+    <!-- Table -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th><i class="fas fa-user-circle"></i> Name</th>
+                    <th><i class="fas fa-mobile-alt"></i> Mobile</th>
+                    <th><i class="fas fa-wallet"></i> Amount</th>
+                    <th><i class="fas fa-map-pin"></i> Location</th>
+                    <th><i class="fas fa-cogs"></i> Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in customers %}
+                <tr {{ 'style="animation-delay: ' ~ (loop.index0 * 0.1) ~ 's;"' | safe }} class="table-row">
+                    <form action="/update" method="POST">
+                        <td><input type="text" name="name" placeholder="Name" title="Customer Name" value="{{ row[0] }}"></td>
+                        <td><input type="text" name="mobile" placeholder="Mobile" title="Mobile Number" value="{{ row[1] }}" readonly class="readonly-input"></td>
+                        <td><input type="number" name="amount" placeholder="Amount" title="Amount" step="0.01" value="{{ row[2] }}"></td>
+                        <td><input type="text" name="location" placeholder="Location" title="Location" value="{{ row[3] }}"></td>
+
+                        <td>
+                            <div class="actions">
+                                <button type="submit" class="update"><i class="fas fa-edit"></i> Update</button>
+                                <a href="/delete/{{ row[1] }}" class="delete"><i class="fas fa-trash-alt"></i> Delete</a>
+                            </div>
+                        </td>
+                    </form>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="empty-state">No customers found. Add your first customer above!</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <p>🚀 Developed by <span class="neon-text">Hari</span></p>
+</footer>
+</body>
+</html>
